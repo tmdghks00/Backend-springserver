@@ -5,24 +5,28 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import java.io.FileInputStream;
+
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 @Configuration
-public class FirebaseConfig { // Firebase를 Spring Boot 애플리케이션에서 사용할 수 있도록 설정하는 파일
+public class FirebaseConfig {
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
-        // firebase-service-account.json 파일 경로를 지정
-        String firebaseServiceAccountPath = "C:/back/1/src/main/resources/firebase-service-account.json";
 
-        // Firebase 서비스 계정 파일 경로로 파일을 읽어옵니다.
-        try (FileInputStream serviceAccount = new FileInputStream(firebaseServiceAccountPath)) {
+        // 1. firebase-service-account.json 파일 내용 전체를 아래 FIREBASE_CREDENTIALS 변수에 문자열로 넣어줍니다.
+        String firebaseCredentials = System.getenv("FIREBASE_CREDENTIALS");
+
+        // 2. 문자열을 InputStream으로 변환합니다.
+        try (InputStream serviceAccount = new ByteArrayInputStream(firebaseCredentials.getBytes(StandardCharsets.UTF_8))) {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl(System.getenv("FIREBASE_DATABASE_URL")) // 환경 변수로 DB URL 설정
                     .build();
-            // FirebaseApp 이름을 명시적으로 "DEFAULT"로 지정, 이미 초기화된 경우 기존 인스턴스 반환
+
             if (FirebaseApp.getApps().isEmpty()) {
                 return FirebaseApp.initializeApp(options, "DEFAULT");
             } else {
