@@ -36,5 +36,4 @@ out/
 ### VS Code ###
 .vscode/
 
-# Firebase service account credentials
-/src/main/resources/firebase-service-account.json
+
