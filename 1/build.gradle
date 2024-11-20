@@ -10,7 +10,6 @@ version = '0.0.1-SNAPSHOT'
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
-        vendor.set(JvmVendorSpec.AMAZON)
     }
 }
 
@@ -42,3 +41,7 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:unchecked"
+}
+
