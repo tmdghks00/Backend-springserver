@@ -5,31 +5,19 @@ import com.google.firebase.FirebaseApp;
 import com.google.firebase.FirebaseOptions;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.io.ClassPathResource;
-import org.springframework.core.io.Resource;
-
+import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 @Configuration
 public class FirebaseConfig { // Firebase를 Spring Boot 애플리케이션에서 사용할 수 있도록 설정하는 파일
 
     @Bean
     public FirebaseApp firebaseApp() throws IOException {
-        // 환경 변수에서 Firebase 서비스 계정 파일 경로를 가져옵니다.
-        String firebaseServiceAccountPath = System.getenv("FIREBASE_SERVICE_ACCOUNT_PATH");
+        // firebase-service-account.json 파일 경로를 지정
+        String firebaseServiceAccountPath = "C:/back/1/src/main/resources/firebase-service-account.json";
 
-        // 환경 변수가 설정되어 있지 않으면 기본 클래스패스에서 찾습니다.
-        Resource resource;
-        if (firebaseServiceAccountPath != null && !firebaseServiceAccountPath.isEmpty()) {
-            // 환경 변수로 지정된 경로에서 파일을 읽습니다.
-            resource = new ClassPathResource(firebaseServiceAccountPath);
-        } else {
-            // 기본 경로인 classpath에서 firebase-service-account.json 파일을 찾습니다.
-            resource = new ClassPathResource("firebase-service-account.json");
-        }
-
-        try (InputStream serviceAccount = resource.getInputStream()) {
+        // Firebase 서비스 계정 파일 경로로 파일을 읽어옵니다.
+        try (FileInputStream serviceAccount = new FileInputStream(firebaseServiceAccountPath)) {
             FirebaseOptions options = FirebaseOptions.builder()
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl(System.getenv("FIREBASE_DATABASE_URL")) // 환경 변수로 DB URL 설정
