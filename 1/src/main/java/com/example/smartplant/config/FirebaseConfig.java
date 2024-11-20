@@ -22,7 +22,6 @@ public class FirebaseConfig { // Firebase를 Spring Boot 애플리케이션에�
                     .setCredentials(GoogleCredentials.fromStream(serviceAccount))
                     .setDatabaseUrl(System.getenv("FIREBASE_DATABASE_URL")) // 환경 변수로 DB URL 설정
                     .build();
-
             // FirebaseApp 이름을 명시적으로 "DEFAULT"로 지정, 이미 초기화된 경우 기존 인스턴스 반환
             if (FirebaseApp.getApps().isEmpty()) {
                 return FirebaseApp.initializeApp(options, "DEFAULT");
