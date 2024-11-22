@@ -18,7 +18,5 @@ CRUD 작업을 처리 ✅
 
 6. API 문서화: Swagger(OpenAPI)를 이용한 RESTful API 자동 문서화 기능 제공 ✅
 
-
-
 추가 고려사항 =>
 보안 강화: Firebase Authentication API 키를 환경 변수로 관리하여 보안을 강화하는 것이 좋습니다.
